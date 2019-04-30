@@ -1,0 +1,51 @@
+version: '3.7'
+
+services: 
+    db: 
+        image: mysql:5.7
+        container_name: mysql_dev01
+        ports:
+            - "3306:3306"
+        restart: always 
+        environment: 
+            MYSQL_ROOT_PASSWORD: geheim1234
+            MYSQL_DATABASE: wordpress 
+            MYSQL_USER: sa 
+            MYSQL_PASSWORD: geheim1234
+        volumes: 
+            #- 'c:\docker\wordpress\dev01\sql:/var/lib/mysql'
+            - mysqlvolume_dev01:/var/lib/mysql
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: myadmin_dev01
+        environment:
+            - PMA_ARBITRARY=1
+            - PMA_HOST=db
+        restart: always
+        ports:
+            - "8788:80"
+        depends_on: 
+                - db
+    wp: 
+        image: wordpress:4-php7.2-apache 
+        container_name: wordpress_dev01 
+        volumes: 
+            #- 'c:\docker\wordpress\dev01\wp-content\themes:/var/www/html/wp-content/themes/'
+            #- 'c:\docker\wordpress\dev01\wp-content\uploads:/var/www/html/wp-content/uploads/'
+            - wordpressvolume_dev01:/var/www/html/wp-content/themes/ 
+            - wordpressvolume_dev01:/var/www/html/wp-content/uploads/
+        ports: 
+            - "8787:80" 
+        restart: always 
+        environment: 
+            WORDPRESS_DB_HOST: db 
+            WORDPRESS_DB_USER: sa 
+            WORDPRESS_DB_PASSWORD: geheim1234
+        depends_on: 
+                - db
+volumes: 
+    mysqlvolume_dev01:
+    
+    wordpressvolume_dev01:
+    
+    
