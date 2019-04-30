@@ -1,6 +1,6 @@
 # Development environments
 
-Use your own passwords!
+Use your own secure passwords!
 
 ## Install
 1. Terminal: git clone https://github.com/k3yro/DockerCompose.git your/path/
